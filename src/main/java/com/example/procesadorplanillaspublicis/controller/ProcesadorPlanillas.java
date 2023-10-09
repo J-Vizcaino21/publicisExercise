@@ -1,6 +1,8 @@
 package com.example.procesadorplanillaspublicis.controller;
 
 
+import com.example.procesadorplanillaspublicis.model.Empleado;
+import com.example.procesadorplanillaspublicis.services.ProveedorMiembrosPlanilla;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,19 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import com.publicisglobal.proveedorplanillas.ProveedorMiembrosPlanillas;
-import com.publicisglobal.proveedorplanillas.Empleado;
-
 
 @RestController
 @CrossOrigin("*")
 public class ProcesadorPlanillas {
 
     @Autowired
-    private final ProveedorMiembrosPlanillas proveedorMiembrosPlanillas;
+    private ProveedorMiembrosPlanilla proveedorMiembrosPlanillas;
 
-    public ProcesadorPlanillas(ProveedorMiembrosPlanillas proveedorMiembrosPlanillas) {
-        this.proveedorMiembrosPlanillas = new proveedorMiembrosPlanillas;
+    public ProcesadorPlanillas(ProveedorMiembrosPlanilla proveedorMiembrosPlanillas) {
+        this.proveedorMiembrosPlanillas = proveedorMiembrosPlanillas;
     }
 
     @GetMapping("/totalPagar")
@@ -31,7 +30,7 @@ public class ProcesadorPlanillas {
             if (empleado.getEstado()) {
                 if (empleado.getMontoMensual() < 0) {
                     throw new IllegalArgumentException("El empleado " + empleado.getNombre() +
-                            " tiene un monto mensual registrado no permito de " + empleado.getMontoMensual());
+                            " tiene un monto mensual registrado no permitido");
                 }
                 if (empleado.getId() == 0) {
                     throw new IllegalArgumentException("El empleado " + empleado.getNombre() +
